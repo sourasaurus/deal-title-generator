@@ -68,7 +68,13 @@ Output only final title.
     });
 
     const aiData = await aiRes.json();
-    const title = aiData.choices[0].message.content.trim();
+
+if (!aiData.choices || !aiData.choices[0]) {
+  console.error("OpenAI error:", aiData);
+  return res.status(500).json({ error: "OpenAI failed" });
+}
+
+const title = aiData.choices[0].message.content.trim();
 
     return res.status(200).json({ title });
 
